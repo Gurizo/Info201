@@ -1,0 +1,83 @@
+---
+title: "A3: SPL Library Checkouts"
+output: html_document
+---
+
+### Introduction
+"In this analysis, we examine the trends and insights derived from three charts to gain a deeper understanding of book checkout patterns. The first chart compares the total checkout trends of ebooks and physical books (referred to as 'books'), aiming to investigate the impact of COVID-19 on book preferences. We observe that physical book checkouts exhibit a descending trend, indicating a decrease in popularity, while ebooks display an interesting pattern of initial increase and subsequent decrease. This suggests that COVID-19 may have influenced a shift towards ebooks as people preferred to stay at home. The second chart focuses on the total checkout trend for recent book reads, revealing a decline in interest for 'The Girl with the Lower Back Tattoo' with zero checkouts since 2018. However, 'The Trespasser' still maintains some interest, albeit decreasing, with checkouts in 2022. Lastly, the third chart explores the top 5 most checked out books, highlighting 'Educated: a memoir' as the book with the highest number of checkouts. These charts collectively provide insights into the impact of COVID-19, recent book reads, and the popularity of specific titles on book checkout trends."
+
+### Summary Information
+After analyzing the dataset, several key findings have emerged. Firstly, the average number of checkouts for each book was calculated, providing insights into the popularity of different titles. Secondly, focusing on the specific book "Among Others," the maximum and minimum checkouts were determined, allowing for an understanding of the book's peak and lowest points of popularity over time. Additionally, by filtering the data for ebooks only, the checkout trends for this specific book in electronic format were examined. Notably, the highest number of checkouts for the ebook version was identified, indicating its popularity among readers. Lastly, the total checkouts for physical books were analyzed on a yearly basis, revealing trends and fluctuations in overall usage. These findings provide valuable insights into the popularity and usage patterns of specific books, both in physical and ebook formats, contributing to a comprehensive understanding of the dataset.
+
+```{r, warning=FALSE, echo=FALSE}
+  summary <- readLines("summary.R")
+  eval(parse(text=summary))
+```
+
+- What is the average number of checkouts for each item?
+Refer to avg_checkouts.
+
+- What is the month or year with the most/least checkouts for a book that you're interested in?
+most: month = 4
+least: month = 7,9,10
+
+- What is the month or year with the most/least checkouts for ebooks?
+most: 2018, 4
+least: 2020, 1, 4, 6, 2021, 6
+
+- How has the number of print book checkouts changed over time?
+```{r, warning=FALSE, echo=FALSE}
+library(ggplot2)
+print_data <- library_data %>% filter(MaterialType == "BOOK")
+
+print_checkouts <- print_data %>%
+  group_by(CheckoutYear) %>%
+  summarize(total_checkouts = sum(Checkouts))
+
+ggplot(print_checkouts, aes(x = CheckoutYear, y = total_checkouts)) +
+  geom_line(color = "steelblue") +
+  labs(x = "Year", y = "Total checkouts", title = "Print Book Checkouts by Year") +
+  theme_bw()
+```
+
+### The Dataset
+- Who collected/published the data? 
+  - The data is collected and published by the Seattle Public Library.
+- What are the parameters of the data (dates, number of checkouts, kinds of books, etc.)?
+  - UsageClass, CheckoutType, MaterialType, CheckoutYear, CheckoutMonth, Checkouts, Title, ISBN, Creator, Subjects, Publisher, PublicationYear
+```{r, warning=FALSE, echo=FALSE}
+names(library_data)
+```
+- How was the data collected or generated?  
+  - The data is collected when items checked out at least 10 times a month from 2017-2023.
+- Why was the data collected?  
+  - The data is collected in order to analyze the pattern related to the item checkouts.
+- What, if any, ethical questions do you need to consider when working with this data?  
+  - You need to make sure to include all types of people in your data and make sure to exclude biased dataset.
+- What are possible limitations or problems with this data?   (at least 200 words)
+  - The data provided by the Seattle Public Library may have certain limitations that must be taken into consideration when analyzing the information. While the data offers insights into the patterns of book checkouts at the Seattle Public Library, it is important to note that this data may not be representative of other libraries around the world. Different libraries may have different book collections, demographics, and cultural backgrounds, which can greatly influence the borrowing patterns of their clients.Another limitation of the data is that it only provides information on the books that are frequently checked out. The books that are not borrowed as frequently may not be well-represented in the data, which can limit the insights that can be drawn from the data. Moreover, the data does not provide any information about the clients who borrow the books, such as their age, race, or gender. Without this information, it is difficult to identify any patterns or trends in the borrowing behaviors of different client groups.
+
+
+### First Trends Over Time Chart
+This chart aims to compare the total checkout trends of ebooks and physical books (hereafter referred to as "books"). The objective is to analyze whether COVID-19 had an impact on the type of books people checked out. The data shows a descending trend over time for books, indicating a decrease in checkouts. In contrast, ebooks exhibit an increasing and then decreasing trend over time. It is reasonable to assume that COVID-19 influenced this trend, as people preferred to stay at home to prevent the spread of the disease. Consequently, physical book checkouts declined, while ebook checkouts increased initially but eventually followed a similar decreasing trend as time progressed.
+
+```{r, warning=FALSE, echo=FALSE}
+chart1 <- readLines("chart1_example.R")
+eval(parse(text=chart1))
+```
+
+### Second Trends Over Time Chart
+This second chart focuses on the total checkout trend for specific books recently read. Both books exhibit a decreasing checkout trend. However, "The Girl with the Lower Back Tattoo" shows no checkouts since 2018, while "The Trespasser" continues to have some checkouts in 2022, albeit heading towards zero. These trends suggest that the popularity of "The Girl with the Lower Back Tattoo" has declined significantly, leading to a lack of checkouts. On the other hand, "The Trespasser" still maintains some interest, albeit decreasing, as indicated by the continued checkouts in 2022. 
+
+```{r, warning=FALSE, echo=FALSE}
+chart2 <- readLines("chart2_example.R")
+eval(parse(text=chart2))
+```
+
+### Your Choice
+The purpose of this chart is to delve into the top 5 most checked out books and compare their differences. The graph reveals that "Educated: a memoir" has the highest number of checkouts among the selected books. This observation aligns with the book's popularity, as evidenced by its 207,196 reviews and 4.6-star rating on Amazon. These factors support the trend depicted in the chart, indicating that "Educated: a memoir" is a widely read and highly regarded book.
+
+```{r, warning=FALSE, echo=FALSE}
+chart3 <- readLines("chart3.R")
+eval(parse(text=chart3))
+```

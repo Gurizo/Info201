@@ -1,0 +1,13 @@
+library("dplyr")
+library("stringr")
+df <- read.csv("https://raw.githubusercontent.com/info-201b-sp23/P02-Exploratory-Analysis_BC-2-KL-SS-KY-LC/main/archive/train.csv?token=GHSAT0AAAAAACBS7AEHATH2I4INUPHKGZXCZDFBUIA")
+df_table <- arrange(df, Age)
+df_table <- arrange(df_table, Gender)
+df_table <- arrange(df_table, Type.of.Travel)
+df_table <- arrange(df_table, Class)
+df_table <- df_table[ -c(5) ]
+wifi_service <- df_table %>% group_by(Inflight.wifi.service) %>% summarise(sat = mean(satisfaction_score))
+wifi_service <- round(wifi_service, digit = 1)
+food <- df_table %>% group_by(Food.and.drink) %>% summarise(sat = mean(satisfaction_score))
+join <- left_join(df_join, wifi_service, by = "sat")
+df_join <- data.frame(sat = c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
